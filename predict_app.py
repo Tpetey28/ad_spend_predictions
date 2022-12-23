@@ -1,40 +1,8 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import pickle
 import streamlit as st
-
-
-def check_password():
-    """Returns `True` if the user had the correct password."""
-
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        if st.session_state["password"] == st.secrets["password"]:
-            st.session_state["password_correct"] = True
-            del st.session_state["password"]  # don't store password
-        else:
-            st.session_state["password_correct"] = False
-
-    if "password_correct" not in st.session_state:
-        # First run, show input for password.
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        return False
-    elif not st.session_state["password_correct"]:
-        # Password not correct, show input + error.
-        st.text_input(
-            "Password", type="password", on_change=password_entered, key="password"
-        )
-        st.error("😕 Password incorrect")
-        return False
-    else:
-        # Password correct.
-        return True
-
-if check_password():
-    st.write("Here goes your normal Streamlit app...")
+import pickle
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 #establishing key metrics
 lead_orders_22 = 2259
@@ -43,51 +11,48 @@ search_conv_rate = .0558
 close_rate = 0.04000495856060069
 fb_conv_rate = 0.015146803126899535
 
+#establishing months for ml model inputs
+August = [1,0,0,0,0,0,0,0,0,0,0]
+December = [0,1,0,0,0,0,0,0,0,0,0]
+February = [0,0,1,0,0,0,0,0,0,0,0]
+January = [0,0,0,1,0,0,0,0,0,0,0]
+July = [0,0,0,0,1,0,0,0,0,0,0]
+June = [0,0,0,0,0,1,0,0,0,0,0]
+March = [0,0,0,0,0,0,1,0,0,0,0]
+May = [0,0,0,0,0,0,0,1,0,0,0]
+November = [0,0,0,0,0,0,0,0,1,0,0]
+October = [0,0,0,0,0,0,0,0,0,1,0]
+September = [0,0,0,0,0,0,0,0,0,0,1]
+April = [0,0,0,0,0,0,0,0,0,0,0]
+
+
+
 #Order Goals - our goal is here to increase Wholesale orders by 10% for 2023. 
 #Note - according to Google Analytics, ~44% of conversions (leads) came from paid sessions (Facebook & Search Combined)
 #Note - according
 
-Goal_Orders_23 = lead_orders_22 * 1.1
+Goal_Orders_23 = (lead_orders_22 * 1.1) / 12
 
 #knowing our close rate, we can calculate how many leads are needed to hit the orders goal
 
 Goal_Leads_23 = Goal_Orders_23 / close_rate
 
-#we can calculate approx how many leads in 2022 were non paid & from paid sources
+#defining function to calculate goal given user input for non paid leads
 
-non_paid_leads_22 = total_leads_22 *.56
-paid_leads_22 = total_leads_22 *.44
+def lead_goal_line(non_paid_leads):
+    
+    goal_leads = Goal_Leads_23 - non_paid_leads
+    
+    return goal_leads
 
-#now we can calculate various goals with non_paid_leads fluctuating
-
-non_paid_same = non_paid_leads_22
-non_paid_down10 = non_paid_leads_22 * .9
-non_paid_down20 = non_paid_leads_22 * .8
-non_paid_down30 = non_paid_leads_22 * .7
-non_paid_up10 = non_paid_leads_22 * 1.1
-
-#now that we have our fluctuating variables, we can calculate how many paid leads need to be generated given each of the fluctuations.
-
-goal_paid_leads_same = Goal_Leads_23 - non_paid_leads_22
-goal_paid_leads_down10 = Goal_Leads_23 - non_paid_down10
-goal_paid_leads_down20 = Goal_Leads_23 - non_paid_down20
-goal_paid_leads_down30 = Goal_Leads_23 - non_paid_down30
-goal_paid_leads_up10 = Goal_Leads_23 - non_paid_up10
-
-#now that we have our paid lead goals at each fluctuation, we can calculate orders goals
-
-goal_paid_orders_same = goal_paid_leads_same * close_rate
-goal_paid_orders_down10 = goal_paid_leads_down10 * close_rate
-goal_paid_orders_down20 = goal_paid_leads_down20  * close_rate
-goal_paid_orders_down30 = goal_paid_leads_down30 * close_rate
-goal_paid_orders_up10 = goal_paid_leads_up10 * close_rate
-
-# calculating traffic goals
-goal_paid_traffic_same = goal_paid_leads_same / search_conv_rate
-goal_paid_traffic_down10 = goal_paid_leads_down10 / search_conv_rate
-goal_paid_traffic_down20 = goal_paid_leads_down20 / search_conv_rate
-goal_paid_traffic_down30 = goal_paid_leads_down30 / search_conv_rate
-goal_paid_traffic_up10 = goal_paid_leads_up10 / search_conv_rate
+#defining function to calculate orders goal given user input for non paid leads
+def orders_goal_line(non_paid_leads):
+    
+    goal_leads = Goal_Leads_23 - non_paid_leads
+    
+    goal_orders = goal_leads * close_rate
+    
+    return goal_orders
 
 #defining 2 functions to read in trained models
 def load_fb_model():
@@ -98,13 +63,31 @@ def load_fb_model():
 
 def load_search_model():
     
-    model = pickle.load(open('search_model.pkl', 'rb'))
+    model = pickle.load(open('ep_model.pkl', 'rb'))
     
     return model
 
 #assigning both models once loaded
 fb_model = load_fb_model()
 search_model = load_search_model()
+
+#defining function to run ep/search model
+def run_model(cost, month):
+    aug = month[0]
+    dec = month[1]
+    feb = month[2]
+    jan = month[3]
+    jul = month[4]
+    jun = month[5]
+    mar = month[6]
+    may = month[7]
+    nov = month[8]
+    oct_ = month[9]
+    sep = month[10]
+    
+    pred = search_model.predict([[cost, aug, dec, feb, jan, jul, jun, mar, may, nov, oct_, sep]])
+    
+    return(pred)
 
 
 def show_predict_page():
@@ -118,6 +101,42 @@ def show_predict_page():
     fb_daily = st.number_input('Facebook Daily Budget', step = 250)
     google = st.number_input('Google Daily Budget', step = 250)
     bing =  st.number_input('Bing Daily Budget', step = 250)
+    month = st.selectbox('Select Month', ('January','February','March','April','May','June','July','August','September','October','November','December'))
+    non_paid_leads = st.number_input('Expected Organic Leads', step = 250)
+    
+    if month == 'January':
+        month = January
+        
+    if month == 'February':
+        month = February
+        
+    if month == 'March':
+        month = March
+        
+    if month == 'April':
+        month = April
+        
+    if month == 'May':
+        month = May
+        
+    if month == 'June':
+        month = June
+        
+    if month == 'July':
+        month = July
+        
+    if month == 'August':
+        month = August
+        
+    if month == 'September':
+        month = September
+        
+    if month == 'October':
+        month = October
+        
+    if month == 'November':
+        month = November
+        
     
     fb_daily_budget.append(fb_daily)
     search_daily_budget.append(google + bing)
@@ -214,7 +233,7 @@ def show_predict_page():
                 fb_traffic_predictions.append(fb_traffic_pred)
     
     
-                search_traffic_pred = search_model.predict([[search_spend]])[0][0]
+                search_traffic_pred = run_model(search_spend, month)[0][0]
                 search_traffic_pred = search_traffic_pred * 30
                 search_traffic_predictions.append(search_traffic_pred)
                 total_traffic_pred = fb_traffic_pred + search_traffic_pred
@@ -278,16 +297,8 @@ def show_predict_page():
             #height = bar.get_height()
             #label_x_pos = bar.get_x() + bar.get_width() / 2
             #plt.text(label_x_pos, height, s=f'{round(height):,}', ha = 'center', va = 'top', size=12)
-            plt.axhline(y = goal_paid_leads_same/ 12, color = 'grey', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_leads_same /12,'No Change',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_leads_up10/ 12, color = 'green', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_leads_up10 / 12, '+10 Non Paid Leads',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_leads_down10/ 12, color = 'orange', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_leads_down10 / 12, '-10% Non Paid Leads',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_leads_down20/ 12, color = 'red', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_leads_down20 / 12, '-20% Non Paid Leads',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_leads_down30 / 12, color = 'darkred', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_leads_down30 / 12, '-30% Non Paid Leads',ha='left', va='center', size =25, alpha = .9)
+            plt.axhline(y = lead_goal_line(non_paid_leads), color = 'grey', linestyle = 'dotted', linewidth=6, alpha = .5)
+            plt.text(7, lead_goal_line(non_paid_leads),'Lead Goal',ha='left', va='center', size =25, alpha = .9)
             plt.legend(fontsize=25, loc='upper left')
             
             
@@ -311,18 +322,10 @@ def show_predict_page():
                 #height = bar.get_height()
                 #label_x_pos = bar.get_x() + bar.get_width() / 2
                 #plt.text(label_x_pos, height, s=f'{round(height):,}', ha = 'center', va = 'top', size=12)
-            plt.axhline(y = goal_paid_orders_same/ 12, color = 'grey', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_orders_same /12,'No Change',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_orders_up10/ 12, color = 'green', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_orders_up10 / 12, '+10 Non Paid Orders',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_orders_down10/ 12, color = 'orange', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_orders_down10 / 12, '-10% Non Paid Orders',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_orders_down20/ 12, color = 'red', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_orders_down20 / 12, '-20% Non Paid Orders',ha='left', va='center', size =25, alpha = .9)
-            plt.axhline(y = goal_paid_orders_down30 / 12, color = 'darkred', linestyle = 'dotted', linewidth=6, alpha = .5)
-            plt.text(7, goal_paid_orders_down30 / 12, '-30% Non Paid Orders',ha='left', va='center', size =25, alpha = .9)
+            plt.axhline(y = orders_goal_line(non_paid_leads), color = 'grey', linestyle = 'dotted', linewidth=6, alpha = .5)
+            plt.text(7, orders_goal_line(non_paid_leads),'Orders Goal',ha='left', va='center', size =25, alpha = .9)
             plt.legend(fontsize=25, loc='upper left')
                 
             st.pyplot(fig)
-check_password()
+
 show_predict_page()
