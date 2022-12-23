@@ -358,4 +358,4 @@ else:
 if check_password():
     st.button("Click me")    
     
- show_predict_page()
+show_predict_page()
