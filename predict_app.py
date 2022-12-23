@@ -95,7 +95,7 @@ def run_model(cost, month):
 def show_predict_page():
     st.title("Ad Spend Impact Prediction")
     
-    st.write("""### Model is based on 2022 performance""")
+    st.write("""### Model is based on a combination of 2019 & 2022 performance""")
     
     fb_daily_budget = []
     search_daily_budget = []
