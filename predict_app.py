@@ -9,9 +9,7 @@ import matplotlib.pyplot as plt
 #establishing key metrics
 lead_orders_22 = 2259
 total_leads_22 = 56468
-search_conv_rate = .0558
 close_rate = 0.04000495856060069
-fb_conv_rate = 0.015146803126899535
 
 s_conv_rate_jan = 0.05313798381806254
 s_conv_rate_feb = 0.06060327808640558
@@ -25,6 +23,15 @@ s_conv_rate_sep = 0.06136475746197823
 s_conv_rate_oct = 0.055185919919295605
 s_conv_rate_nov = 0.04925815821640006
 s_conv_rate_dec = 0.04230082891160397
+
+f_conv_rate_avg = 0.015405020820369634
+f_conv_rate_feb = 0.016281823564239194
+f_conv_rate_mar = 0.017109249688112636
+f_conv_rate_may = 0.02347285067873303
+f_conv_rate_jun = 0.026486692983573156
+f_conv_rate_jul = 0.020438151215602458
+f_conv_rate_aug = 0.020385814168983236
+
 
 #establishing months for ml model inputs
 August = [1,0,0,0,0,0,0,0,0,0,0]
@@ -118,51 +125,62 @@ def show_predict_page():
     if month == 'January':
         month = January
         search_conv_rate = s_conv_rate_jan
+        fb_conv_rate = f_conv_rate_avg
         
     if month == 'February':
         month = February
         search_conv_rate = s_conv_rate_feb
+        fb_conv_rate = f_conv_rate_feb
         
     if month == 'March':
         month = March
         search_conv_rate = s_conv_rate_mar
+        fb_conv_rate = f_conv_rate_mar
         
     if month == 'April':
         month = April
         search_conv_rate = s_conv_rate_apr
+        fb_conv_rate = f_conv_rate_avg
         
     if month == 'May':
         month = May
         search_conv_rate = s_conv_rate_may
+        fb_conv_rate = f_conv_rate_may
         
     if month == 'June':
         month = June
         search_conv_rate = s_conv_rate_jun
+        fb_conv_rate = f_conv_rate_jun
         
     if month == 'July':
         month = July
         search_conv_rate = s_conv_rate_jul
+        fb_conv_rate = f_conv_rate_jul
         
     if month == 'August':
         month = August
         search_conv_rate = s_conv_rate_aug
+        fb_conv_rate = f_conv_rate_aug
         
     if month == 'September':
         month = September
         search_conv_rate = s_conv_rate_sep
+        fb_conv_rate = f_conv_rate_avg
         
     if month == 'October':
         month = October
         search_conv_rate = s_conv_rate_oct
+        fb_conv_rate = f_conv_rate_avg
         
     if month == 'November':
         month = November
         search_conv_rate = s_conv_rate_nov
+        fb_conv_rate = f_conv_rate_avg
         
     if month == 'December':
         month = December
         search_conv_rate = s_conv_rate_dec
-        
+        fb_conv_rate = f_conv_rate_avg
     
     fb_daily_budget.append(fb_daily)
     search_daily_budget.append(google + bing)
