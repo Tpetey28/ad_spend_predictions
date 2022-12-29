@@ -13,6 +13,19 @@ search_conv_rate = .0558
 close_rate = 0.04000495856060069
 fb_conv_rate = 0.015146803126899535
 
+s_conv_rate_jan = 0.05313798381806254
+s_conv_rate_feb = 0.06060327808640558
+s_conv_rate_mar = 0.060132537020371434
+s_conv_rate_apr = 0.0643156285315429
+s_conv_rate_may = 0.05853624833348249
+s_conv_rate_jun = 0.05472064953439619
+s_conv_rate_jul = 0.05138938623200226
+s_conv_rate_aug = 0.061807544746733334
+s_conv_rate_sep = 0.06136475746197823
+s_conv_rate_oct = 0.055185919919295605
+s_conv_rate_nov = 0.04925815821640006
+s_conv_rate_dec = 0.04230082891160397
+
 #establishing months for ml model inputs
 August = [1,0,0,0,0,0,0,0,0,0,0]
 December = [0,1,0,0,0,0,0,0,0,0,0]
