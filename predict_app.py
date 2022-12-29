@@ -42,9 +42,7 @@ April = [0,0,0,0,0,0,0,0,0,0,0]
 
 
 
-#Order Goals - our goal is here to increase Wholesale orders by 10% for 2023. 
-#Note - according to Google Analytics, ~44% of conversions (leads) came from paid sessions (Facebook & Search Combined)
-#Note - according
+#Order Goals - our goal is to increase Wholesale orders by 10% for 2023. 
 
 Goal_Orders_23 = (lead_orders_22 * 1.1) / 12
 
@@ -119,36 +117,51 @@ def show_predict_page():
     
     if month == 'January':
         month = January
+        search_conv_rate = s_conv_rate_jan
         
     if month == 'February':
         month = February
+        search_conv_rate = s_conv_rate_feb
         
     if month == 'March':
         month = March
+        search_conv_rate = s_conv_rate_mar
         
     if month == 'April':
         month = April
+        search_conv_rate = s_conv_rate_apr
         
     if month == 'May':
         month = May
+        search_conv_rate = s_conv_rate_may
         
     if month == 'June':
         month = June
+        search_conv_rate = s_conv_rate_jun
         
     if month == 'July':
         month = July
+        search_conv_rate = s_conv_rate_jul
         
     if month == 'August':
         month = August
+        search_conv_rate = s_conv_rate_aug
         
     if month == 'September':
         month = September
+        search_conv_rate = s_conv_rate_sep
         
     if month == 'October':
         month = October
+        search_conv_rate = s_conv_rate_oct
         
     if month == 'November':
         month = November
+        search_conv_rate = s_conv_rate_nov
+        
+    if month == 'December':
+        month = December
+        search_conv_rate = s_conv_rate_dec
         
     
     fb_daily_budget.append(fb_daily)
