@@ -302,6 +302,7 @@ def show_predict_page():
             data_tuples = list(zip(total_monthly_budget, total_lead_predictions))
             df1 = pd.DataFrame(data_tuples, columns = ['Monthly_Budget', 'Monthly_Leads'])
             df1['Monthly_Budget'] = '$' + df1['Monthly_Budget'].astype(str)
+            df1.to_excel('troubleshooting.xlsx',index=False)
 
 
                 
