@@ -318,6 +318,7 @@ def show_predict_page():
             plt.legend(fontsize=25, loc='upper left')
             for bar in chart_traffic:
                 height = bar.get_height()
+                print(height)
                 label_x_pos = bar.get_x() + bar.get_width() / 2
                 plt.text(label_x_pos, height, s=f'{round(height):,}', ha = 'center', va = 'bottom', size=25)
                 
