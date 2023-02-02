@@ -313,7 +313,7 @@ def show_predict_page():
             plt.title('Predicted Paid Site Traffic', size = 35)
             plt.ylabel('Paid Site Traffic', size = 30)
             plt.xlabel('Monthly Ad Spend', size = 30)
-            plt.tick_params(axis='x', labelsize=30)
+            plt.tick_params(axis='x', labelsize=12)
             plt.tick_params(axis='y', labelsize=30)
             plt.legend(fontsize=25, loc='upper left')
             for bar in chart_traffic:
@@ -331,7 +331,7 @@ def show_predict_page():
             plt.ylabel('Paid Leads', size = 30)
             plt.xlabel('Monthly Ad Spend', size = 30)
             plt.tick_params(axis='x', labelsize=30)
-            plt.tick_params(axis='y', labelsize=30)
+            plt.tick_params(axis='y', labelsize=12)
             for bar in chart_leads:
                 height = bar.get_height()
                 label_x_pos = bar.get_x() + bar.get_width() / 2
@@ -356,7 +356,7 @@ def show_predict_page():
             plt.ylabel('Orders from Paid Leads', size = 30)
             plt.xlabel('Monthly Ad Spend', size = 30)
             plt.tick_params(axis='x', labelsize=30)
-            plt.tick_params(axis='y', labelsize=30)
+            plt.tick_params(axis='y', labelsize=12)
             for bar in chart_orders:
                 height = bar.get_height()
                 label_x_pos = bar.get_x() + bar.get_width() / 2
