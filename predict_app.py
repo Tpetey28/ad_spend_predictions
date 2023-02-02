@@ -208,40 +208,7 @@ def show_predict_page():
             daily_search_budgets.append(search *1.1)
             daily_search_budgets.append(search *1.2)
             daily_search_budgets.append(search *1.3)
-    
-    
 
-            #establishing empty lists to hold calculations for charting
-            fb_order_predictions = []
-            search_order_predictions = []
-            total_order_predictions = []
-            fb_lead_predictions = []
-            search_lead_predictions = []
-            total_lead_predictions = []
-            fb_traffic_predictions = []
-            search_traffic_predictions = []
-            total_traffic_predictions = []
-            monthly_fb_budget = []
-            monthly_search_budget = []
-            total_monthly_budget = []
-
-
-            for fb, search in zip(fb_daily_budget, search_daily_budget):
-                daily_fb_budgets.append(fb *.7)
-                daily_fb_budgets.append(fb *.8)
-                daily_fb_budgets.append(fb *.9)
-                daily_fb_budgets.append(fb)
-                daily_fb_budgets.append(fb *1.1)
-                daily_fb_budgets.append(fb *1.2)
-                daily_fb_budgets.append(fb *1.3)
-    
-                daily_search_budgets.append(round(search *.7))
-                daily_search_budgets.append(round(search *.8))
-                daily_search_budgets.append(round(search *.9))
-                daily_search_budgets.append(search)
-                daily_search_budgets.append(round(search *1.1))
-                daily_search_budgets.append(round(search *1.2))
-                daily_search_budgets.append(round(search *1.3))
     
     
 
